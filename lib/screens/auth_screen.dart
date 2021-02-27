@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../widgets/auth/auth_form.dart';
 import '../providers/auth.dart';
 import '../providers/users.dart';
+import '../helpers/delegate_exception.dart';
 
 class AuthScreen extends StatefulWidget {
   static const String routeName = '/auth-screen';
@@ -76,10 +76,10 @@ class _AuthScreenState extends State<AuthScreen> {
       // Instead in main.dart, in the class InitializeFirebaseApp()
       // the StreamBuilder(stream: FirebaseAuth.instance.userChanges()...
       // works as a trigger that toggles to the class "ChatScreen" because 
-      // the state of the user was changed and user is signed, 
+      // the state of the user was changed and the user is signed, 
       // or to the class "AuthScreen" if not.
       return;
-    } on FirebaseException catch (error) {
+    } on DelegateException catch (error) {
       print('$MAIN_TAG[E] _submitAuthForm (isLogin : $isLogin) ERROR: $error');
       var message = 'An error occurred. Please, check your credential';
       if (error != null) {
@@ -88,7 +88,7 @@ class _AuthScreenState extends State<AuthScreen> {
       // For the Scaffold.of(context) we need the context, where the Scaffold is.
       // Because the context of the AuthScreenState doesn't contain the Scaffold,
       // therefore we obtain it from the AuthForm widget, which is the child
-      //of this AuthScreenState and contains the Scaffold.
+      // of this AuthScreenState and it's context contains the Scaffold.
       Scaffold.of(ctx).showSnackBar(
         SnackBar(
           action: SnackBarAction(

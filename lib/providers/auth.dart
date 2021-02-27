@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../helpers/delegate_exception.dart';
+
 class Auth with ChangeNotifier {
   static const String MAIN_TAG = '## Auth';
   final firebaseAuthInstance = FirebaseAuth.instance;
@@ -26,6 +28,14 @@ class Auth with ChangeNotifier {
       return userCredential.user.uid;
     } on FirebaseException catch (error) {
       print('$MAIN_TAG signInEmailPassword() error.code: ${error.code}');
+      throw DelegateException(
+        message: error.message,
+        plugin: error.plugin,
+        code: error.code,
+        stackTrace: error.stackTrace,
+      );
+    } catch (error) {
+      print('$MAIN_TAG signInEmailPassword() error: $error');
       throw error;
 /*
   Attempts to sign in a user with the given email address and password.
@@ -64,10 +74,17 @@ or the account corresponding to the email does not have a password set.
       print('$MAIN_TAG signUpEmailPassword: $userCredential');
       return userCredential.user.uid;
     } on FirebaseException catch (error) {
-      print('$MAIN_TAG signUpEmailPassword() error.code: ${error.code}');
+      print('$MAIN_TAG signInEmailPassword() error.code: ${error.code}');
+      throw DelegateException(
+        message: error.message,
+        plugin: error.plugin,
+        code: error.code,
+        stackTrace: error.stackTrace,
+      );
+    } catch (error) {
+      print('$MAIN_TAG signInEmailPassword() error: $error');
       throw error;
 /* 
-  Tries to create a new user account with the given email address and password.
 A [FirebaseAuthException] maybe thrown with the following error code:
 ! email-already-in-use:
 Thrown if there already exists an account with the given email address.
@@ -94,7 +111,6 @@ Thrown if the password is not strong enough.
     if (currentUser == null) {
       return null;
     } else {
-      print('$MAIN_TAG get userName displayName: ${currentUser.displayName}');
       return currentUser.uid;
     }
   }

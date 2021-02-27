@@ -98,30 +98,36 @@ class ChatMessages extends StatelessWidget {
           horizontal: 8.0,
           vertical: 10.0,
         ),
+        // TODO Maybe would try to choose the width
+        // if the real width of this widget will less than the computation
         width: deviceWidth * 0.6,
         decoration: BoxDecoration(
           border: Border.all(),
           borderRadius: isMyMessage
               ? BorderRadius.only(
-                  bottomLeft: Radius.circular(10.0),
+                  bottomLeft: Radius.circular(18.0),
                   bottomRight: Radius.zero,
-                  topLeft: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
+                  topLeft: Radius.circular(18.0),
+                  topRight: Radius.circular(18.0),
                 )
               : BorderRadius.only(
                   bottomLeft: Radius.zero,
-                  bottomRight: Radius.circular(10.0),
-                  topLeft: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
+                  bottomRight: Radius.circular(18.0),
+                  topLeft: Radius.circular(18.0),
+                  topRight: Radius.circular(18.0),
                 ),
-          color: isMyMessage ? Colors.lightBlue[100] : Colors.grey[200],
+          color: isMyMessage ? Colors.lightBlue[50] : Colors.grey[200],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
+              // We get a nested field by [String] or [FieldPath] from this
+              // [DocumentSnapshot], using [dynamic operator [](dynamic field) => get(field);]
+              // We could also use [messages[index].doc.data()['userName'];] where the
+              // [doc.data() returns a [Map<String, dynamic>]
               messages[index]['userName'],
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Text(messages[index]['text'].toString()),
           ],

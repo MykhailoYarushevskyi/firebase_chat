@@ -1,8 +1,9 @@
-import 'package:firebase_chat/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'widgets/loading_indicator.dart';
 import 'screens/chat_screen.dart';
 import 'screens/auth_screen.dart';
 import 'providers/messages.dart';
@@ -69,6 +70,9 @@ class InitializeFirebaseApp extends StatelessWidget {
               ? LoadingIndicator(
                   message: 'Wait, please. FirebaseApp is initializing.')
               : StreamBuilder(
+                  // The stream works as a trigger that toggles to the class "ChatScreen" because
+                  // the state of the user was changed and the user is signed,
+                  // or to the class "AuthScreen" if not.
                   stream: FirebaseAuth.instance.userChanges(),
                   builder: (ctx, userSnapshot) {
                     if (userSnapshot.hasError) {
