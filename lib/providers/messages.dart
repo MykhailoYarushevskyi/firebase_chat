@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Messages with ChangeNotifier {
@@ -8,22 +7,11 @@ class Messages with ChangeNotifier {
   // one instance of the Firestore for all instances of the Message
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final collectionPath = 'chat';
-  var _isFirebaseAppInitialized = false;
 
   /// method updates fields that depend on the Auth class or an another class,
   /// will be called in ChangeNotifierProxyProvider<Auth, Messages>
   /// im main().
   void update() {}
-
-  bool get isFirebaseAppInitialized => _isFirebaseAppInitialized;
-
-  Future<void> initializeFirebaseApp() async {
-    print('$MAIN_TAG initializeFirebaseApp() Entrance');
-    return Firebase.initializeApp().then((value) {
-      _isFirebaseAppInitialized = true;
-      print('$MAIN_TAG Firebase.initializeApp().then()');
-    }).catchError((error) => throw error);
-  }
 
   /// return the stream of messages that ordered by [date_time_message] field
   Stream<QuerySnapshot> streamMessages() {

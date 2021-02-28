@@ -1,11 +1,11 @@
 import 'package:firebase_chat/providers/auth.dart';
-import 'package:firebase_chat/providers/messages.dart';
+import 'package:firebase_chat/providers/initialization_firebase_app.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('App Provider Tests', () {
     var auth = Auth();
-    Messages().initializeFirebaseApp().then((_) {
+    InitializationFirebaseApp().initializeFirebaseApp().then((_) {
       test('A userId was obtained', () {
         var userId = auth.userId;
         expect(userId != null, true);
