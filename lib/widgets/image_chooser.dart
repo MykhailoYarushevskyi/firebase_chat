@@ -5,7 +5,7 @@ class ImageChooser extends StatelessWidget {
   Widget build(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Container(
-        child: FlatButton(
+        child: TextButton(
       child: Text(
         'BottomSheet',
       ),

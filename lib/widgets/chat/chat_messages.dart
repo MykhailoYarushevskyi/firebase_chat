@@ -45,7 +45,8 @@ class ChatMessages extends StatelessWidget {
 
   /// the method returns the list of messages [DocumentSnapshot].
   List<DocumentSnapshot> getMessages(
-      AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+    AsyncSnapshot<QuerySnapshot> streamSnapshot,
+  ) {
     List<DocumentSnapshot> messages;
     if (streamSnapshot.hasData) {
       messages = streamSnapshot.data.docs;
@@ -87,33 +88,56 @@ class ChatMessages extends StatelessWidget {
     bool isMyMessage,
     double deviceWidth,
   ) {
+    bool willBeSeparated = true; // current message and previous message will be separated
+    bool isUserIdDifferent = true; // current user and previous user are different
+    bool indentNormal = false; // indent between current and previous messages
+    if (index >= 0 && index < messages.length - 1) {
+      DateTime currentItemDate = DateTime.fromMillisecondsSinceEpoch(
+          messages[index]['date_time_message']);
+      DateTime earlierItemDate = DateTime.fromMillisecondsSinceEpoch(
+          messages[index + 1]['date_time_message']);
+      willBeSeparated = _isYearMonthDayNotTheSame(
+        firstDate: currentItemDate,
+        secondDate: earlierItemDate,
+      );
+      String currentUserId = messages[index]['userId'];
+      String earlierUserId = messages[index + 1]['userId'];
+      isUserIdDifferent = currentUserId.compareTo(earlierUserId) != 0;
+      if (willBeSeparated || isUserIdDifferent) {
+        indentNormal = true;
+      }
+    }
+    print(
+        '$MAIN_TAG._buildItemWidget index: $index, name: ${messages[index]['userName']}');
     return Align(
       alignment: isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
-        ),
+        margin: EdgeInsets.only(
+            left: 8.0,
+            right: 8.0,
+            top: indentNormal ? 10.0 : 2.0,
+            bottom: 0.00),
         padding: EdgeInsets.symmetric(
           horizontal: 8.0,
           vertical: 10.0,
         ),
-        // TODO Maybe would try to choose the width
-        // if the real width of this widget will less than the computation
+        // TODO Maybe would try to choose the width to less than it is computation
+        // if the real width of this widget is less than the calculation
         width: deviceWidth * 0.6,
         decoration: BoxDecoration(
           border: Border.all(),
           borderRadius: isMyMessage
               ? BorderRadius.only(
                   bottomLeft: Radius.circular(18.0),
-                  bottomRight: Radius.zero,
-                  topLeft: Radius.circular(18.0),
-                  topRight: Radius.circular(18.0),
-                )
-              : BorderRadius.only(
-                  bottomLeft: Radius.zero,
                   bottomRight: Radius.circular(18.0),
                   topLeft: Radius.circular(18.0),
+                  topRight:
+                      isUserIdDifferent ? Radius.zero : Radius.circular(18.0),
+                )
+              : BorderRadius.only(
+                  bottomLeft: Radius.circular(18.0),
+                  bottomRight: Radius.circular(18.0),
+                  topLeft: isUserIdDifferent ? Radius.zero : Radius.circular(18.0),
                   topRight: Radius.circular(18.0),
                 ),
           color: isMyMessage ? Colors.lightBlue[50] : Colors.grey[200],
@@ -121,14 +145,15 @@ class ChatMessages extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              // We get a nested field by [String] or [FieldPath] from this
-              // [DocumentSnapshot], using [dynamic operator [](dynamic field) => get(field);]
-              // We could also use [messages[index].doc.data()['userName'];] where the
-              // [doc.data() returns a [Map<String, dynamic>]
-              messages[index]['userName'],
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            if (isUserIdDifferent || willBeSeparated)
+              Text(
+                // We get a nested field by [String] or [FieldPath] from this
+                // [DocumentSnapshot], using [dynamic operator [](dynamic field) => get(field);]
+                // We could also use [messages[index].doc.data()['userName'];] where the
+                // [doc.data() returns a [Map<String, dynamic>]
+                messages[index]['userName'],
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             Text(messages[index]['text'].toString()),
           ],
         ),
@@ -149,13 +174,12 @@ class ChatMessages extends StatelessWidget {
         messages[index]['date_time_message']);
     DateTime earlierItemDate = DateTime.fromMillisecondsSinceEpoch(
         messages[index + 1]['date_time_message']);
-
-    if (index >= 0 && index < messages.length - 1) {
-      if (currentItemDate.year != earlierItemDate.year ||
-          currentItemDate.month != earlierItemDate.month ||
-          currentItemDate.day != earlierItemDate.day) {
-        return _buildSeparatorWidget(messages, index);
-      }
+    var mustBeSeparated = _isYearMonthDayNotTheSame(
+      firstDate: currentItemDate,
+      secondDate: earlierItemDate,
+    );
+    if (index >= 0 && index < messages.length - 1 && mustBeSeparated) {
+      return _buildSeparatorWidget(messages, index);
     }
     return Container();
   }
@@ -182,5 +206,17 @@ class ChatMessages extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool _isYearMonthDayNotTheSame({
+    DateTime firstDate,
+    DateTime secondDate,
+  }) {
+    if (firstDate.year != secondDate.year ||
+        firstDate.month != secondDate.month ||
+        firstDate.day != secondDate.day) {
+      return true;
+    }
+    return false;
   }
 }

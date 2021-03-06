@@ -83,7 +83,7 @@ class _AuthFormState extends State<AuthForm> {
                   SizedBox(height: 12.0),
                   if (widget.isLoading) CircularProgressIndicator(),
                   if (!widget.isLoading)
-                    RaisedButton(
+                    ElevatedButton(
                       child: Text(
                         _isLogin ? 'Login' : 'Signup',
                         style: TextStyle(
@@ -93,7 +93,7 @@ class _AuthFormState extends State<AuthForm> {
                       onPressed: _trySubmit,
                     ),
                   if (!widget.isLoading)
-                    FlatButton(
+                    TextButton(
                       child: Text(
                         _isLogin
                             ? 'Create a new account'
@@ -111,7 +111,7 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                   if (_isLogin)
                     if (!widget.isLoading)
-                      FlatButton(
+                      TextButton(
                           onPressed: () {},
                           child: Text('Forgot the password?')),
                 ],

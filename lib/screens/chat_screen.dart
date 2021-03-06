@@ -16,8 +16,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   static const String MAIN_TAG = '## ChatScreen';
   final localeString = 'uk';
-  double _deviceHeight;
-  double _deviceWidth;
 
   @override
   void initState() {
@@ -38,19 +36,10 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _deviceHeight = MediaQuery.of(context).size.height;
-    _deviceWidth = MediaQuery.of(context).size.width;
-  }
-
-  @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: false);
 
     // initFirebase();
-    print(
-        '$MAIN_TAG _deviceHeight: $_deviceHeight; _deviceWidth: $_deviceWidth');
     return Scaffold(
       appBar: AppBar(
         title: Text('Chat'),

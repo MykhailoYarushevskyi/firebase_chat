@@ -85,11 +85,11 @@ class _AuthScreenState extends State<AuthScreen> {
       if (error != null) {
         message = error.code;
       }
-      // For the Scaffold.of(context) we need the context, where the Scaffold is.
+      // For the ScaffoldMessenger.of(context) we need the context, where the Scaffold is.
       // Because the context of the AuthScreenState doesn't contain the Scaffold,
       // therefore we obtain it from the AuthForm widget, which is the child
       // of this AuthScreenState and it's context contains the Scaffold.
-      Scaffold.of(ctx).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           action: SnackBarAction(
             label: 'Ok',

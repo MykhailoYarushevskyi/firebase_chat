@@ -11,6 +11,7 @@
 
 # secure related
 google-services.json
+GoogleService-Info.plist
 
 # IntelliJ related
 *.iml
