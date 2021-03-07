@@ -13,9 +13,9 @@ class Auth with ChangeNotifier {
   /// any [authStateChanges], [idTokenChanges] or [userChanges]
   /// stream listeners.Important: You must enable Email & Password accounts
   /// in the Auth section of the Firebase console before being able to use them.
-  Future<String> signInEmailPassword({
-    String userEmail,
-    String userPassword,
+  Future<String?> signInEmailPassword({
+    required String userEmail,
+    required String userPassword,
   }) async {
     print('$MAIN_TAG signInEmailPassword Entrance');
     try {
@@ -25,7 +25,10 @@ class Auth with ChangeNotifier {
         password: userPassword,
       );
       print('$MAIN_TAG signInEmailPassword: $userCredential');
-      return userCredential.user.uid;
+      if (userCredential.user != null) {
+        return userCredential.user!.uid;
+      } else
+        return null;
     } on FirebaseException catch (error) {
       print('$MAIN_TAG signInEmailPassword() error.code: ${error.code}');
       throw DelegateException(
@@ -59,10 +62,10 @@ or the account corresponding to the email does not have a password set.
 
   /// method tries to create a new user account
   /// with the given email address [userEmail] and password [userPassword].
-  Future<String> signUpEmailPassword({
-    String userEmail,
-    String userPassword,
-    String userName,
+  Future<String?> signUpEmailPassword({
+    required String userEmail,
+    required String userPassword,
+    String? userName,
   }) async {
     print('$MAIN_TAG signUpEmailPassword Entrance');
     try {
@@ -72,7 +75,10 @@ or the account corresponding to the email does not have a password set.
         password: userPassword,
       );
       print('$MAIN_TAG signUpEmailPassword: $userCredential');
-      return userCredential.user.uid;
+      if (userCredential.user != null) {
+        return userCredential.user!.uid;
+      } else
+        return null;
     } on FirebaseException catch (error) {
       print('$MAIN_TAG signInEmailPassword() error.code: ${error.code}');
       throw DelegateException(
@@ -106,7 +112,7 @@ Thrown if the password is not strong enough.
     firebaseAuthInstance.signOut();
   }
 
-  String get userId {
+  String? get userId {
     final currentUser = firebaseAuthInstance.currentUser;
     if (currentUser == null) {
       return null;
@@ -115,7 +121,7 @@ Thrown if the password is not strong enough.
     }
   }
 
-  String get userDisplayName {
+  String? get userDisplayName {
     final currentUser = firebaseAuthInstance.currentUser;
     if (currentUser == null) {
       return null;

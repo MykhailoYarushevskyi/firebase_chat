@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-class DelegateException extends FirebaseException {
+// class DelegateException extends FirebaseException {
+class DelegateException {
   /// The plugin the exception is for.
   ///
   /// The value will be used to prefix the message to give more context about
@@ -9,7 +9,7 @@ class DelegateException extends FirebaseException {
   final String plugin;
 
   /// The long form message of the exception.
-  final String message;
+  final String? message;
 
   /// The optional code to accommodate the message.
   ///
@@ -18,17 +18,18 @@ class DelegateException extends FirebaseException {
 
   /// The stack trace which provides information to the user about the call
   /// sequence that triggered an exception
-  final StackTrace stackTrace;
+  final StackTrace? stackTrace;
 
   DelegateException({
-    @required this.message,
-    this.code,
-    @required this.plugin,
+    this.message = '',
+    this.code = 'unknown',
+    this.plugin = '',
     this.stackTrace,
   });
+  //  : super(plugin: '');
 
 String toString(){
-    String output = "[$plugin/$code] $message";
+    String output = "[$plugin/$code] ${message ?? ''}";
 
     if (stackTrace != null) {
       output += "\n\n${stackTrace.toString()}";

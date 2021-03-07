@@ -15,8 +15,8 @@ class _NewMessageState extends State<NewMessage> {
   static const String MAIN_TAG = '## NewMessage';
   final textController = TextEditingController();
   String _enteredMessage = '';
-  String _currentUserId;
-  String _currentUserName;
+  String? _currentUserId;
+  String? _currentUserName;
   bool _isLoading = false;
 
   @override
@@ -95,7 +95,7 @@ class _NewMessageState extends State<NewMessage> {
       _isLoading = true;
     });
     try {
-      String name = await Provider.of<Users>(context, listen: false)
+      String? name = await Provider.of<Users>(context, listen: false)
           .getUserName(_currentUserId);
       _currentUserName = name;
       setState(() {

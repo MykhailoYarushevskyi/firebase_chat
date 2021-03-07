@@ -7,11 +7,11 @@ class AuthForm extends StatefulWidget {
   );
 
   final void Function({
-    String email,
-    String name,
-    String password,
-    bool isLogin,
-    BuildContext ctx,
+    required String email,
+    required String name,
+    required String password,
+    required bool isLogin,
+    // BuildContext ctx,
   }) submitAuthForm;
   final bool isLoading;
 
@@ -46,17 +46,17 @@ class _AuthFormState extends State<AuthForm> {
                 children: <Widget>[
                   TextFormField(
                     key: ValueKey('email'),
-                    validator: (value) => _validateEmail(value),
+                    validator: (value) => _validateEmail(value!),
                     keyboardAppearance: Brightness.dark,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(labelText: 'Email address'),
-                    onSaved: (value) => _userEmail = value.trim(),
+                    onSaved: (value) => _userEmail = value!.trim(),
                   ),
                   if (!_isLogin)
                     TextFormField(
                       key: ValueKey('username'),
                       validator: (value) {
-                        if (value.isEmpty || value.length < 4) {
+                        if (value!.isEmpty || value.length < 4) {
                           return 'Please enter at least 4 characters';
                         }
                         return null;
@@ -64,12 +64,12 @@ class _AuthFormState extends State<AuthForm> {
                       keyboardAppearance: Brightness.dark,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(labelText: 'User name'),
-                      onSaved: (value) => _userName = value.trim(),
+                      onSaved: (value) => _userName = value!.trim(),
                     ),
                   TextFormField(
                     key: ValueKey('password'),
                     validator: (value) {
-                      if (value.isEmpty || value.length < 7) {
+                      if (value!.isEmpty || value.length < 7) {
                         return 'Password must be at least 7 characters long';
                       }
                       return null;
@@ -78,7 +78,7 @@ class _AuthFormState extends State<AuthForm> {
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
                     decoration: InputDecoration(labelText: 'Password'),
-                    onSaved: (value) => _userPassword = value.trim(),
+                    onSaved: (value) => _userPassword = value!.trim(),
                   ),
                   SizedBox(height: 12.0),
                   if (widget.isLoading) CircularProgressIndicator(),
@@ -124,14 +124,14 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   void _trySubmit() {
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState!.validate();
     print('$MAIN_TAG _trySubmit isValid: $isValid');
     // force the keyboard to disappear
     FocusScope.of(context).unfocus();
     if (!isValid) {
       return;
     }
-    _formKey.currentState.save();
+    _formKey.currentState!.save();
     print(
         '$MAIN_TAG _trySubmit save(): $_userEmail; $_userName; $_userPassword');
     widget.submitAuthForm(
@@ -139,11 +139,11 @@ class _AuthFormState extends State<AuthForm> {
       name: _userName,
       password: _userPassword,
       isLogin: _isLogin,
-      ctx: context,
+      // ctx: context,
     );
   }
 
-  String _validateEmail(String value) {
+  String? _validateEmail(String value) {
     // TODO add a validate with a regex
     if (value.isEmpty || !value.contains('@')) {
       return 'Please enter a valid Email address';

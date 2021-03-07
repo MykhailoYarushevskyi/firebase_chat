@@ -35,13 +35,13 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _submitAuthForm({
-    String email,
-    String name,
-    String password,
-    bool isLogin,
-    BuildContext ctx,
+    required String email,
+    required String name,
+    required String password,
+    required bool isLogin,
+    // BuildContext ctx,
   }) async {
-    String uId; // received user Id
+    String? uId; // received user Id
     setState(() {
       _isLoading = true;
     });
@@ -97,7 +97,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
           duration: Duration(seconds: 5),
           padding: EdgeInsets.all(8.0),
-          backgroundColor: Theme.of(ctx).errorColor,
+          backgroundColor: Theme.of(context).errorColor,
           content: Text(
             message,
             textAlign: TextAlign.center,

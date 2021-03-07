@@ -16,7 +16,7 @@ class ChatMessages extends StatelessWidget {
     final double _deviceWidth = MediaQuery.of(context).size.width;
     final messagesInstance = Provider.of<Messages>(context, listen: false);
     final currentUserId = Provider.of<Auth>(context, listen: false).userId;
-    List<DocumentSnapshot> _messages;
+    List<DocumentSnapshot>? _messages;
     return StreamBuilder<QuerySnapshot>(
         stream: messagesInstance.streamMessages(),
         builder: (context, streamSnapshot) {
@@ -30,26 +30,26 @@ class ChatMessages extends StatelessWidget {
               ? Container(width: 0.0, height: 0.0)
               : ListView.separated(
                   reverse: true,
-                  itemCount: _messages.length,
+                  itemCount: _messages!.length,
                   separatorBuilder: (ctx, index) =>
-                      _buildListSeparator(_messages, index),
+                      _buildListSeparator(_messages!, index),
                   itemBuilder: (ctx, index) {
                     final messageUserId =
-                        _messages[index].data()['userId'] as String;
+                        _messages![index].data()!['userId'] as String?;
                     bool isMyMessage = messageUserId == currentUserId;
                     return _buildListItem(
-                        _messages, index, isMyMessage, _deviceWidth);
+                        _messages!, index, isMyMessage, _deviceWidth);
                   });
         });
   }
 
   /// the method returns the list of messages [DocumentSnapshot].
-  List<DocumentSnapshot> getMessages(
+  List<DocumentSnapshot>? getMessages(
     AsyncSnapshot<QuerySnapshot> streamSnapshot,
   ) {
-    List<DocumentSnapshot> messages;
+    List<DocumentSnapshot>? messages;
     if (streamSnapshot.hasData) {
-      messages = streamSnapshot.data.docs;
+      messages = streamSnapshot.data!.docs;
       if (messages != null) {
         messages.where((item) => item['date_time_message'] != null).toList();
       }
@@ -88,22 +88,25 @@ class ChatMessages extends StatelessWidget {
     bool isMyMessage,
     double deviceWidth,
   ) {
-    bool willBeSeparated = true; // current message and previous message will be separated
-    bool isUserIdDifferent = true; // current user and previous user are different
+    bool willBeSeparatedCurrentMessage =
+        true; // current message and previous message will be separated
+    bool isCurrentUserDifferentWithPreviousUser = true;
     bool indentNormal = false; // indent between current and previous messages
     if (index >= 0 && index < messages.length - 1) {
       DateTime currentItemDate = DateTime.fromMillisecondsSinceEpoch(
           messages[index]['date_time_message']);
       DateTime earlierItemDate = DateTime.fromMillisecondsSinceEpoch(
           messages[index + 1]['date_time_message']);
-      willBeSeparated = _isYearMonthDayNotTheSame(
+      willBeSeparatedCurrentMessage = _isYearMonthDayNotTheSame(
         firstDate: currentItemDate,
         secondDate: earlierItemDate,
       );
       String currentUserId = messages[index]['userId'];
       String earlierUserId = messages[index + 1]['userId'];
-      isUserIdDifferent = currentUserId.compareTo(earlierUserId) != 0;
-      if (willBeSeparated || isUserIdDifferent) {
+      isCurrentUserDifferentWithPreviousUser =
+          currentUserId.compareTo(earlierUserId) != 0;
+      if (willBeSeparatedCurrentMessage ||
+          isCurrentUserDifferentWithPreviousUser) {
         indentNormal = true;
       }
     }
@@ -131,13 +134,16 @@ class ChatMessages extends StatelessWidget {
                   bottomLeft: Radius.circular(18.0),
                   bottomRight: Radius.circular(18.0),
                   topLeft: Radius.circular(18.0),
-                  topRight:
-                      isUserIdDifferent ? Radius.zero : Radius.circular(18.0),
+                  topRight: isCurrentUserDifferentWithPreviousUser
+                      ? Radius.zero
+                      : Radius.circular(18.0),
                 )
               : BorderRadius.only(
                   bottomLeft: Radius.circular(18.0),
                   bottomRight: Radius.circular(18.0),
-                  topLeft: isUserIdDifferent ? Radius.zero : Radius.circular(18.0),
+                  topLeft: isCurrentUserDifferentWithPreviousUser
+                      ? Radius.zero
+                      : Radius.circular(18.0),
                   topRight: Radius.circular(18.0),
                 ),
           color: isMyMessage ? Colors.lightBlue[50] : Colors.grey[200],
@@ -145,7 +151,9 @@ class ChatMessages extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (isUserIdDifferent || willBeSeparated)
+            if (!isMyMessage &&
+                (isCurrentUserDifferentWithPreviousUser ||
+                    willBeSeparatedCurrentMessage))
               Text(
                 // We get a nested field by [String] or [FieldPath] from this
                 // [DocumentSnapshot], using [dynamic operator [](dynamic field) => get(field);]
@@ -209,8 +217,8 @@ class ChatMessages extends StatelessWidget {
   }
 
   bool _isYearMonthDayNotTheSame({
-    DateTime firstDate,
-    DateTime secondDate,
+    required DateTime firstDate,
+    required DateTime secondDate,
   }) {
     if (firstDate.year != secondDate.year ||
         firstDate.month != secondDate.month ||

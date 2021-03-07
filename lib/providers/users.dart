@@ -26,7 +26,7 @@ class Users with ChangeNotifier {
     }
   }
 
-  Future<String> getUserName(userId) async {
+  Future<String?> getUserName(userId) async {
     try {
       DocumentSnapshot doc = await FirebaseFirestore.instance
           .collection(usersPath)
@@ -37,7 +37,7 @@ class Users with ChangeNotifier {
       // We could also use [final docDataMap = doc.data();] where the 
       // [docDataMap] is a [Map<String, dynamic>],
       // and [return docDataMap['name'] as String;],
-      final String userName = doc['name'];
+      final String? userName = doc['name'];
       print('$MAIN_TAG getUserName userId: $userId; userName: $userName');
       return userName;
     } on FirebaseException catch (error) {

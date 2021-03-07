@@ -66,7 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   value: 'signOut',
                 ),
               ],
-              onChanged: (value) {
+              onChanged: (dynamic value) {
                 if (value == 'signOut') {
                   //user logout
                   auth.signOut();
