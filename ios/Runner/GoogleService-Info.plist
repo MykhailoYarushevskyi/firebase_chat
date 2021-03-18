@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>43452197441-ei76t23qrgh8atc7c1pgi2191mollkth.apps.googleusercontent.com</string>
+	<string>XXXXXXXXXXXXXXXXXXXXX.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.43452197441-ei76t23qrgh8atc7c1pgi2191mollkth</string>
+	<string>com.googleusercontent.apps.XXXXXXXXXXXXXXXXXXXXX</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC3AXjBRl-moXlo_oa8ndziScA3sFaIhrY</string>
+	<string>ababagalamaga</string>
 	<key>GCM_SENDER_ID</key>
-	<string>43452197441</string>
+	<string>XXXXXXXXXX</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:43452197441:ios:ff05b5659df9f3520974c0</string>
+	<string>1:XXXXXXXXXXXXXXXXXXXXX</string>
 	<key>DATABASE_URL</key>
 	<string>https://fir-chat-c8413-default-rtdb.firebaseio.com</string>
 </dict>
