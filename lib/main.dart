@@ -10,7 +10,7 @@ import 'providers/initialization_firebase_app.dart';
 import 'providers/messages.dart';
 import 'providers/auth.dart';
 import 'providers/users.dart';
-
+import 'providers/profile_images.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<Auth>(create: (_) => Auth()),
           ChangeNotifierProvider<Users>(create: (_) => Users()),
           ChangeNotifierProvider<Messages>(create: (ctx) => Messages()),
-          ChangeNotifierProvider<InitializationFirebaseApp>(create: (ctx) => InitializationFirebaseApp()),
+          ChangeNotifierProvider<InitializationFirebaseApp>(
+              create: (ctx) => InitializationFirebaseApp()),
+          ChangeNotifierProvider<ProfileImages>(
+              create: (ctx) => ProfileImages()),
           /* ChangeNotifierProxyProvider<Auth, Messages>(
           create: (_) => Messages(),
           update: (_, auth, messages) => messages
@@ -30,7 +33,6 @@ class MyApp extends StatelessWidget {
           child: ...
         ); */
         ],
-        //https://stackoverflow.com/questions/63492211/no-firebase-app-default-has-been-created-call-firebase-initializeapp-in
         child: MaterialApp(
           supportedLocales: const <Locale>[Locale('en', 'US')],
           locale: null,
@@ -62,8 +64,10 @@ class MyApp extends StatelessWidget {
 class InitializeFirebaseAppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //https://stackoverflow.com/questions/63492211/no-firebase-app-default-has-been-created-call-firebase-initializeapp-in
     return FutureBuilder(
-        future: context.read<InitializationFirebaseApp>().initializeFirebaseApp(),
+        future:
+            context.read<InitializationFirebaseApp>().initializeFirebaseApp(),
         // future: Provider.of<Messages>(context, listen: false).initializeFirebaseApp(),
         builder: (ctx, initSnapshot) {
           if (initSnapshot.hasError) {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
@@ -20,8 +22,10 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    //package:intl/date_symbol_data_local.dart
     initializeDateFormatting();
+    // Initializing of Firebase Cloud Messages
+    // setFCMPermission();
+
     // In our case we initialize the default Firebase App in main().
     // As a variant, we could be calling  initializeApp() here,
     // and in the build() method, before StreamBuilder<>()
@@ -53,23 +57,41 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Row(
                       children: [
                         Icon(
-                          Icons.exit_to_app,
-                          color: Theme.of(context).primaryIconTheme.color,
+                          Icons.settings,
+                          color: Colors.black,
                         ),
                         SizedBox(width: 6.0),
                         Text(
-                          'Sign Out',
+                          'Settings',
                         ),
                       ],
                     ),
                   ),
-                  value: 'signOut',
+                  value: 'settings',
+                ),
+                DropdownMenuItem(
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.exit_to_app,
+                          color: Colors.black,
+                        ),
+                        SizedBox(width: 6.0),
+                        Text(
+                          'Logout',
+                        ),
+                      ],
+                    ),
+                  ),
+                  value: 'logout',
                 ),
               ],
               onChanged: (dynamic value) {
-                if (value == 'signOut') {
-                  //user logout
+                if (value == 'logout') {
                   auth.signOut();
+                } else if (value == 'settings') {
+                  log('$MAIN_TAG settings menu item pressed');
                 }
               })
         ],

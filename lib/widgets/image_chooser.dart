@@ -10,10 +10,14 @@ class ImageChooser extends StatelessWidget {
         'BottomSheet',
       ),
       onPressed: () {
-        Scaffold.of(context).showBottomSheet<void>(
-          (context) => Container(
+        // Scaffold.of(context).showBottomSheet<void>()
+        showModalBottomSheet(
+          context: context,
+          builder: (context) => Container(
             height: deviceHeight * 0.33,
-            child: Center(child: Text('BottomSheet'),),
+            child: Center(
+              child: Text('BottomSheet'),
+            ),
           ),
         );
       },

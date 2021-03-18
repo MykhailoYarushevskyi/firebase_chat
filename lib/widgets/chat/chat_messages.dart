@@ -50,9 +50,7 @@ class ChatMessages extends StatelessWidget {
     List<DocumentSnapshot>? messages;
     if (streamSnapshot.hasData) {
       messages = streamSnapshot.data!.docs;
-      if (messages != null) {
-        messages.where((item) => item['date_time_message'] != null).toList();
-      }
+      messages.where((item) => item['date_time_message'] != null).toList();
     }
     return messages;
   }

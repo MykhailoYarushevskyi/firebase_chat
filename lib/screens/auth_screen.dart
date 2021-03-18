@@ -75,20 +75,14 @@ class _AuthScreenState extends State<AuthScreen> {
       // Navigator.of(context).pushReplacementNamed(ChatScreen.routeName) was muted;
       // Instead in main.dart, in the class InitializeFirebaseApp()
       // the StreamBuilder(stream: FirebaseAuth.instance.userChanges()...
-      // works as a trigger that toggles to the class "ChatScreen" because 
-      // the state of the user was changed and the user is signed, 
+      // works as a trigger that toggles to the class "ChatScreen" because
+      // the state of the user was changed and the user is signed,
       // or to the class "AuthScreen" if not.
       return;
     } on DelegateException catch (error) {
       print('$MAIN_TAG[E] _submitAuthForm (isLogin : $isLogin) ERROR: $error');
       var message = 'An error occurred. Please, check your credential';
-      if (error != null) {
-        message = error.code;
-      }
-      // For the ScaffoldMessenger.of(context) we need the context, where the Scaffold is.
-      // Because the context of the AuthScreenState doesn't contain the Scaffold,
-      // therefore we obtain it from the AuthForm widget, which is the child
-      // of this AuthScreenState and it's context contains the Scaffold.
+      message = error.code;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           action: SnackBarAction(

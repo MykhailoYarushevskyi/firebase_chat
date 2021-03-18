@@ -1,9 +1,6 @@
-import 'package:firebase_core/firebase_core.dart';
 
-// class DelegateException extends FirebaseException {
 class DelegateException {
   /// The plugin the exception is for.
-  ///
   /// The value will be used to prefix the message to give more context about
   /// the exception.
   final String plugin;
