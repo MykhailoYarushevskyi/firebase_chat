@@ -3,6 +3,10 @@
 A new Flutter project.
 ------------------------------------------------
 ## [This project thus far is under development]
+------------------------------------------------
+## Attention!
+If this project is in a public repository, then
+there is no single file in the project that contains Google APIKEY for Android, and Google APIKEY for iOS in the corresponding file damaged.
 
 The firebase_chat app lets you authenticate,
 send messages in a group chat and get messages from other users.
