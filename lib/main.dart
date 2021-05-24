@@ -10,7 +10,7 @@ import 'package:firebase_chat/interface_adapters/presenters/providers/users.dart
 import 'package:firebase_chat/frameworks/ui/screens/auth_screen.dart';
 import 'package:firebase_chat/frameworks/ui/screens/chat_screen.dart';
 import 'package:firebase_chat/frameworks/ui/widgets/initialize_widget.dart';
-import 'app/service_locator.dart';
+import 'package:firebase_chat/app/service_locator.dart';
 
 void main() {
   setUp();
@@ -29,12 +29,6 @@ class MyApp extends StatelessWidget {
               create: (ctx) => InitializationService()),
           ChangeNotifierProvider<ProfileImages>(
               create: (ctx) => ProfileImages()),
-/*            ChangeNotifierProxyProvider<Auth, Messages>(
-          create: (_) => Messages(),
-          update: (_, auth, messages) => messages
-            ..update(auth...),
-          child: ...
-        );  */
         ],
         child: MaterialApp(
           // supportedLocales: const <Locale>[

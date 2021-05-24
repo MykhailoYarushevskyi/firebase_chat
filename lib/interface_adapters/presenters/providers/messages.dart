@@ -14,7 +14,7 @@ class Messages with ChangeNotifier {
 
   /// It will be called in the builder of the ChangeNotifierProxyProvider<Auth, Messages>,
   /// in the main() method.
-  /// updates fields that depend on the Auth class.
+  /// For example, updates fields that depend on the Auth class.
   void update() {}
 
   //TODO! order the List<PresenterMessageModel> by the dateTimeMessage field of the PresenterMessageModel
@@ -30,7 +30,7 @@ class Messages with ChangeNotifier {
         event.map((model) => PresenterMessageModel.fromModel(model)).toList());
   }
 
-  /// adds the [document] (message) to the [collection] (messages)
+  /// adds the message to the messages
   Future<void> addMessage(Map<String, dynamic> data) async {
     try {
       await _messagesUseCase.addMessageUseCase(data);
@@ -39,7 +39,7 @@ class Messages with ChangeNotifier {
     }
   }
 
-  /// deletes the [document] (message) from the [collection] (messages)
+  /// deletes the message from the messages
   Future<void> deleteMessage(String messageId) async {
     try {
       await _messagesUseCase.deleteMessageUseCase(messageId);

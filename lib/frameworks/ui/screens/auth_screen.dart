@@ -102,7 +102,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
       );
-      //Whether this [State] object is currently in a tree.
+      // Whether this [State] object is currently in a tree.
       // ignore: unnecessary_this
       if (this.mounted) {
         setState(() {
