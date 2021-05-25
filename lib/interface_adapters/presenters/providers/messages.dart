@@ -39,6 +39,15 @@ class Messages with ChangeNotifier {
     }
   }
 
+  /// updates the message on the messages
+  Future<void> updateMessage(PresenterMessageModel model) async {
+    try {
+      await _messagesUseCase.updateMessageUseCase(model.messageId, model.toJson());
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   /// deletes the message from the messages
   Future<void> deleteMessage(String messageId) async {
     try {
