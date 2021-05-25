@@ -50,7 +50,7 @@ class ChatMessages extends StatelessWidget {
                     return GestureDetector(
                       onLongPress: () {
                         if (isMyMessage) {
-                          messagesInstance.deleteMessage('messageId');
+                          messagesInstance.deleteMessage(_messages![index].messageId);
                         }
                       },
                       child: _buildListItem(

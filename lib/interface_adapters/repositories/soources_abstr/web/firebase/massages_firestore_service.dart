@@ -9,4 +9,8 @@ abstract class MessagesFirestoreService {
 
   /// deletes the [document] (message) from the [collection] (messages)
   Future<void> deleteMessageService(String documentId);
+
+  /// updates the [document] (message) in the [collection] (messages)
+  Future<void> updateMessageService(
+      String documentId, Map<String, dynamic> data);
 }

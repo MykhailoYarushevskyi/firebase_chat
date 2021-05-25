@@ -4,19 +4,22 @@ typedef Json = Map<String, dynamic>;
 
 class PresenterMessageModel extends MessageModel {
   PresenterMessageModel({
+    required String messageId,
     required String userId,
     required String userName,
     required int dateTimeMessage,
     String imageUrl = '',
     String textMessage = '',
   }) : super(
+            messageId: messageId,
             userId: userId,
             userName: userName,
             dateTimeMessage: dateTimeMessage,
             imageUrl: imageUrl,
             textMessage: textMessage);
-  factory PresenterMessageModel.fromJson(Json data) {
+  factory PresenterMessageModel.fromJson(String messageId, Json data) {
     return PresenterMessageModel(
+      messageId: messageId,
       userId: data['userId'] as String,
       userName: data['userName'] as String,
       dateTimeMessage: data['date_time_message'] as int,
@@ -27,6 +30,7 @@ class PresenterMessageModel extends MessageModel {
 
   factory PresenterMessageModel.fromModel(MessageModel model) {
     return PresenterMessageModel(
+      messageId: model.messageId,
       userId: model.userId,
       userName: model.userName,
       dateTimeMessage: model.dateTimeMessage,

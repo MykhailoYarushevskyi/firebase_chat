@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_chat/interface_adapters/presenters/presenter_models/presenter_message_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -49,9 +50,10 @@ class _NewMessageState extends State<NewMessage> with ShowDialogs {
           ),
           if (_isLoading) const Center(child: CircularProgressIndicator()),
           if (!_isLoading)
-            Container(padding: const EdgeInsets.all(0.00),
-            margin: EdgeInsets.zero,
-              decoration:  BoxDecoration(
+            Container(
+              padding: const EdgeInsets.all(0.00),
+              margin: EdgeInsets.zero,
+              decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor.withOpacity(0.75),
                 shape: BoxShape.circle,
               ),
@@ -74,23 +76,21 @@ class _NewMessageState extends State<NewMessage> with ShowDialogs {
     log('$mainTag _currentUserId: $_currentUserId; _currentUserName: $_currentUserName');
     context
         .read<Messages>()
-        .addMessage(
-          {
-            'date_time_message': DateTime.now().millisecondsSinceEpoch,
-            'text': _enteredMessage,
-            'userId': _currentUserId ?? '',
-            'userName': _currentUserName ?? '',
-            'imageUrl': '',
-          },
-        )
+        .addMessage(PresenterMessageModel(
+            messageId: '',
+            userId: _currentUserId ?? '',
+            userName: _currentUserName ?? '',
+            dateTimeMessage: DateTime.now().millisecondsSinceEpoch,
+            imageUrl: ' ',
+            textMessage: _enteredMessage))
         .then((_) {})
         .catchError((error) {
-          _showCommonError(
-            'While sending the message an Error occurred!',
-            error as String,
-          );
-          log('$mainTag [ERROR] _sendingMessage $error');
-        });
+      _showCommonError(
+        'While sending the message an Error occurred!',
+        error as String,
+      );
+      log('$mainTag [ERROR] _sendingMessage $error');
+    });
     // Because for the case of using the FirebaseFirestore SDK,
     // we may not wait for a response from the Google server,
     // even if the Internet is blocked, I placed this code here,

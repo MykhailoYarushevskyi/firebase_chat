@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_chat/domain/use_cases/adapters_abstr/repositories/messages_repository.dart';
 import 'package:firebase_chat/interface_adapters/repositories/repository_models/repository_message_model.dart';
 import 'package:firebase_chat/interface_adapters/repositories/soources_abstr/web/firebase/massages_firestore_service.dart';
 
 class MessagesRepositoryImpl implements MessagesRepository {
+  static const String mainTag = '## MessagesRepositoryImpl';
   final MessagesFirestoreService messagesFirestoreService;
 
   MessagesRepositoryImpl(this.messagesFirestoreService);
@@ -15,15 +18,17 @@ class MessagesRepositoryImpl implements MessagesRepository {
     final Stream<List<RepositoryMessageModel>> messagesStream =
         streamQuerySnapshot.map<List<RepositoryMessageModel>>((querySnapshot) =>
             querySnapshot.docs
-                .map<RepositoryMessageModel>((queryDocumentSnapshot) =>
-                    convertMapToModel(queryDocumentSnapshot.data()))
-                .toList());
+                .map<RepositoryMessageModel>((queryDocumentSnapshot) {
+              final messageId = queryDocumentSnapshot.id;
+              return convertIdAndMapToModel(messageId, queryDocumentSnapshot.data());
+            }).toList());
     return messagesStream;
   }
 
-  /// converts [Map<String, dynamic>] to the PresenterMessageModel object
-  RepositoryMessageModel convertMapToModel(Map<String, dynamic> data) {
-    return RepositoryMessageModel.fromJson(data);
+  /// adds mesaageId to the [data] and converts [Map<String, dynamic>] to the PresenterMessageModel object
+  RepositoryMessageModel convertIdAndMapToModel(
+      String messageId, Map<String, dynamic> data) {
+    return RepositoryMessageModel.fromIdAndJson(messageId, data);
   }
 
   /// adds the message to the Firestore
@@ -38,9 +43,20 @@ class MessagesRepositoryImpl implements MessagesRepository {
 
   /// deletes the message from the messages
   @override
-  Future<void> deleteMessageRepo(String documentId) async {
+  Future<void> deleteMessageRepo(String messageId) async {
     try {
-      await messagesFirestoreService.deleteMessageService(documentId);
+      await messagesFirestoreService.deleteMessageService(messageId);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  /// updates the message on the messages
+  @override
+  Future<void> updateMessageRepo(
+      String messageId, Map<String, dynamic> data) async {
+    try {
+      await messagesFirestoreService.updateMessageService(messageId, data);
     } catch (error) {
       rethrow;
     }

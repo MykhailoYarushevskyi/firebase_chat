@@ -31,9 +31,9 @@ class Messages with ChangeNotifier {
   }
 
   /// adds the message to the messages
-  Future<void> addMessage(Map<String, dynamic> data) async {
+  Future<void> addMessage(PresenterMessageModel model) async {
     try {
-      await _messagesUseCase.addMessageUseCase(data);
+      await _messagesUseCase.addMessageUseCase(model.toJson());
     } catch (error) {
       rethrow;
     }
