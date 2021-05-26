@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:focused_menu/modals.dart';
 
 import 'package:intl/intl.dart';
+import 'package:focused_menu/focused_menu.dart';
 import 'package:provider/provider.dart';
 
 import 'package:firebase_chat/interface_adapters/presenters/presenter_models/presenter_message_model.dart';
@@ -10,10 +12,10 @@ import 'package:firebase_chat/interface_adapters/presenters/providers/messages.d
 class ChatMessages extends StatelessWidget {
   static const String mainTag = '## ChatMessages';
   final localeString = 'uk';
-
+  late double _deviceWidth;
   @override
   Widget build(BuildContext context) {
-    final double _deviceWidth = MediaQuery.of(context).size.width;
+    _deviceWidth = MediaQuery.of(context).size.width;
     final messagesInstance = Provider.of<Messages>(context, listen: false);
     final currentUserId = Provider.of<Auth>(context, listen: false).userId;
     List<PresenterMessageModel>? _messages;
@@ -50,7 +52,8 @@ class ChatMessages extends StatelessWidget {
                     return GestureDetector(
                       onLongPress: () {
                         if (isMyMessage) {
-                          messagesInstance.deleteMessage(_messages![index].messageId);
+                          messagesInstance
+                              .deleteMessage(_messages![index].messageId);
                         }
                       },
                       child: _buildListItem(
@@ -106,7 +109,7 @@ class ChatMessages extends StatelessWidget {
     final bool willBeSeparatedCurrentMessage =
         willSeparatedMessages(messages, index);
     bool isCurrentUserDifferentWithPreviousUser = true;
-    // indent between current and previous messages
+    // will be indent between current and previous messages
     bool indentNormal = false;
     if (index >= 0 && index < messages.length - 1) {
       final String currentUserId = messages[index].userId;
@@ -119,53 +122,95 @@ class ChatMessages extends StatelessWidget {
       }
     }
     // log('$mainTag._buildItemWidget index: $index, name: ${messages[index].userName}');
-    return Align(
-      alignment: isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        constraints: BoxConstraints(maxWidth: deviceWidth * 0.6),
-        margin: EdgeInsets.only(
-          left: 8.0,
-          right: 8.0,
-          top: indentNormal ? 10.0 : 2.0,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 10.0,
-        ),
-        decoration: BoxDecoration(
-          border: Border.all(),
-          borderRadius: isMyMessage
-              ? BorderRadius.only(
-                  bottomLeft: const Radius.circular(18.0),
-                  bottomRight: const Radius.circular(18.0),
-                  topLeft: const Radius.circular(18.0),
-                  topRight: isCurrentUserDifferentWithPreviousUser
-                      ? Radius.zero
-                      : const Radius.circular(18.0),
-                )
-              : BorderRadius.only(
-                  bottomLeft: const Radius.circular(18.0),
-                  bottomRight: const Radius.circular(18.0),
-                  topLeft: isCurrentUserDifferentWithPreviousUser
-                      ? Radius.zero
-                      : const Radius.circular(18.0),
-                  topRight: const Radius.circular(18.0),
+    return FocusedMenuHolder(
+      menuWidth: _deviceWidth * 0.40,
+      blurSize: 5.0,
+      menuItemExtent: 45,
+      menuBoxDecoration: const BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      duration: const Duration(milliseconds: 100),
+      animateMenuItems: true,
+      blurBackgroundColor: Colors.black54,
+      // openWithTap: false, // Open Focused-Menu on Tap rather than Long Press
+      menuOffset: 10.0, // Offset value to show menuItem from the selected item
+      bottomOffsetHeight:
+          80.0, // Offset height to consider, for showing the menu item ( for example bottom navigation bar), so that the popup menu will be shown on top of selected item.
+      menuItems: <FocusedMenuItem>[
+        // Add Each FocusedMenuItem  for Menu Options
+        FocusedMenuItem(
+            title: const Text("Open"),
+            trailingIcon: const Icon(Icons.open_in_new),
+            onPressed: () {
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => PlayGround()));
+            }),
+        FocusedMenuItem(
+            title: const Text("Share"),
+            trailingIcon: const Icon(Icons.share),
+            onPressed: () {}),
+        FocusedMenuItem(
+            title: const Text("Modify"),
+            trailingIcon: const Icon(Icons.edit),
+            onPressed: () {}),
+        FocusedMenuItem(
+            title:
+                const Text("Delete", style: TextStyle(color: Colors.redAccent)),
+            trailingIcon: const Icon(
+              Icons.delete,
+              color: Colors.redAccent,
+            ),
+            onPressed: () {}),
+      ],
+      onPressed: () {},
+      child: Align(
+        alignment: isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
+        child: Container(
+          constraints: BoxConstraints(maxWidth: deviceWidth * 0.6),
+          margin: EdgeInsets.only(
+            left: 8.0,
+            right: 8.0,
+            top: indentNormal ? 10.0 : 2.0,
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 10.0,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(),
+            borderRadius: isMyMessage
+                ? BorderRadius.only(
+                    bottomLeft: const Radius.circular(18.0),
+                    bottomRight: const Radius.circular(18.0),
+                    topLeft: const Radius.circular(18.0),
+                    topRight: isCurrentUserDifferentWithPreviousUser
+                        ? Radius.zero
+                        : const Radius.circular(18.0),
+                  )
+                : BorderRadius.only(
+                    bottomLeft: const Radius.circular(18.0),
+                    bottomRight: const Radius.circular(18.0),
+                    topLeft: isCurrentUserDifferentWithPreviousUser
+                        ? Radius.zero
+                        : const Radius.circular(18.0),
+                    topRight: const Radius.circular(18.0),
+                  ),
+            color: isMyMessage ? Colors.lightBlue[50] : Colors.grey[200],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!isMyMessage &&
+                  (isCurrentUserDifferentWithPreviousUser ||
+                      willBeSeparatedCurrentMessage))
+                Text(
+                  messages[index].userName,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-          color: isMyMessage ? Colors.lightBlue[50] : Colors.grey[200],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (!isMyMessage &&
-                (isCurrentUserDifferentWithPreviousUser ||
-                    willBeSeparatedCurrentMessage))
-              Text(
-                messages[index].userName,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            Text(messages[index].textMessage.toString()),
-          ],
+              Text(messages[index].textMessage.toString()),
+            ],
+          ),
         ),
       ),
     );
