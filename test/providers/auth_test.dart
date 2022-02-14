@@ -1,7 +1,9 @@
 import 'dart:developer';
 
-import 'package:flutter_test/flutter_test.dart' as widget_test;
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+// import 'package:flutter_test/flutter_test.dart' as widget_test;
+// import 'package:test/test.dart';
 
 import 'package:firebase_chat/interface_adapters/presenters/providers/auth.dart';
 import 'package:firebase_chat/interface_adapters/presenters/providers/initialization_service.dart';
@@ -9,7 +11,8 @@ import 'package:firebase_chat/interface_adapters/presenters/providers/initializa
 void main() {
   Auth? auth;
   group('App Provider Tests', () {
-    widget_test.TestWidgetsFlutterBinding.ensureInitialized();
+   TestWidgetsFlutterBinding.ensureInitialized();
+    // widget_test.TestWidgetsFlutterBinding.ensureInitialized();
     bool _isFirebaseAppInitialized = false;
     final initFirebaseApp = InitializationService();
     setUpAll(() async {

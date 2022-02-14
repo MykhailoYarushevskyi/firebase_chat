@@ -1,10 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:path_provider/path_provider.dart' as syspaths;
-import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as syspaths;
 
+// ignore: avoid_classes_with_only_static_members
 class ImageHelper {
   static const String mainTag = '## ImageHelper';
 

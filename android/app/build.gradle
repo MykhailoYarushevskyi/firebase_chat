@@ -26,24 +26,31 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion flutter.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-    }
-
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.firebase_chat"
-        minSdkVersion 16
-        targetSdkVersion 29
+        // flutter.minSdkVersion, flutter.targetSdkVersion means that the variable is in flutter directory (with the sdk).
+        // the address is flutter-directory/packages/flutter_tools/gradle/flutter.gradle
+        minSdkVersion 19
+        targetSdkVersion flutter.targetSdkVersion
+        multiDexEnabled = true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        multiDexEnabled true
     }
 
     buildTypes {
@@ -61,8 +68,75 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+
+// def localProperties = new Properties()
+// def localPropertiesFile = rootProject.file('local.properties')
+// if (localPropertiesFile.exists()) {
+//     localPropertiesFile.withReader('UTF-8') { reader ->
+//         localProperties.load(reader)
+//     }
+// }
+
+// def flutterRoot = localProperties.getProperty('flutter.sdk')
+// if (flutterRoot == null) {
+//     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+// }
+
+// def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+// if (flutterVersionCode == null) {
+//     flutterVersionCode = '1'
+// }
+
+// def flutterVersionName = localProperties.getProperty('flutter.versionName')
+// if (flutterVersionName == null) {
+//     flutterVersionName = '1.0'
+// }
+
+// apply plugin: 'com.android.application'
+// apply plugin: 'kotlin-android'
+// apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+// android {
+//     compileSdkVersion 31
+
+//     sourceSets {
+//         main.java.srcDirs += 'src/main/kotlin'
+//     }
+
+//     lintOptions {
+//         disable 'InvalidPackage'
+//     }
+
+//     defaultConfig {
+//         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+//         applicationId "com.example.firebase_chat"
+//         minSdkVersion 19
+//         targetSdkVersion 31
+//         versionCode flutterVersionCode.toInteger()
+//         versionName flutterVersionName
+//         multiDexEnabled true
+//         manifestPlaceholders += [someKey: "@string/some_value"]
+//     }
+
+//     buildTypes {
+//         release {
+//             // TODO: Add your own signing config for the release build.
+//             // Signing with the debug keys for now, so `flutter run --release` works.
+//             signingConfig signingConfigs.debug
+//         }
+//     }
+// }
+
+// flutter {
+//     source '../..'
+// }
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:26.4.0')
-    implementation 'com.google.firebase:firebase-analytics'
+    // implementation 'com.google.firebase:firebase-analytics'
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
 

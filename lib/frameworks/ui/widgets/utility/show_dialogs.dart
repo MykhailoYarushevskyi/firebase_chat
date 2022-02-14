@@ -12,21 +12,23 @@ mixin ShowDialogs {
   }) async {
     if (Platform.isAndroid) {
       await showDialog(
-          context: context,
-          // barrierDismissible: false, // user must tap button!
-          builder: (context) => _buildErrorDialog(
-                context,
-                title,
-                error,
-              ));
+        context: context,
+        // barrierDismissible: false, // a user must tap button!
+        builder: (context) => _buildErrorDialog(
+          context,
+          title,
+          error,
+        ),
+      );
     } else {
       await showCupertinoDialog(
-          context: context,
-          builder: (context) => _buildErrorDialog(
-                context,
-                title,
-                error,
-              ));
+        context: context,
+        builder: (context) => _buildErrorDialog(
+          context,
+          title,
+          error,
+        ),
+      );
     }
   }
 
@@ -45,7 +47,9 @@ mixin ShowDialogs {
           child: const Text('Ok'),
         )
       ],
-      title: Center(child: Text(title)),
+      title: Center(
+        child: Text(title),
+      ),
       titleTextStyle: TextStyle(
         color: Theme.of(context).errorColor,
         fontSize: 24.0,

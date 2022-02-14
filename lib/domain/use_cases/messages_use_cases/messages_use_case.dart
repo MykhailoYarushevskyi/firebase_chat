@@ -5,7 +5,7 @@ import 'package:firebase_chat/domain/use_cases/adapters_abstr/repositories/messa
 
 class MessagesUseCase {
   MessagesUseCase(this.repository);
-  final MessagesRepository repository;
+  final MessagesRepositoryAbstr repository;
 
   /// returns the stream of messages that ordered by the [date_time_message] field
   Stream<List<MessageModel>> getStreamMessagesUseCase() {

@@ -10,6 +10,7 @@
 .svn/
 
 # secure related
+# Firebase Cloud Messages:
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 

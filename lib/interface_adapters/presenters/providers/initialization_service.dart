@@ -10,16 +10,14 @@ class InitializationService with ChangeNotifier {
   bool get isFirebaseAppInitialized => _isFirebaseAppInitialized;
 
   Future<void> initializeFirebaseApp() async {
-   log(
-        '$mainTag initializeFirebaseApp() ENTRANCE. _isFirebaseAppInitialized:$_isFirebaseAppInitialized');
+    log('$mainTag initializeFirebaseApp() ENTRANCE. _isFirebaseAppInitialized:$_isFirebaseAppInitialized');
     if (_isFirebaseAppInitialized) {
       return;
     } else {
       try {
         await Firebase.initializeApp();
         _isFirebaseAppInitialized = true;
-        log(
-            '$mainTag initializeFirebaseApp() EXIT. _isFirebaseAppInitialized:$_isFirebaseAppInitialized');
+        log('$mainTag initializeFirebaseApp() EXIT. _isFirebaseAppInitialized:$_isFirebaseAppInitialized');
         return;
       } catch (error) {
         log('$mainTag initializeFirebaseApp() catch(error). error: $error');

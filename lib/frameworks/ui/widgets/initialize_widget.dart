@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:firebase_chat/interface_adapters/presenters/providers/initialization_service.dart';
 import 'package:firebase_chat/frameworks/ui/screens/auth_screen.dart';
 import 'package:firebase_chat/frameworks/ui/screens/chat_screen.dart';
 import 'package:firebase_chat/frameworks/ui/screens/utility_screens/init_error_screen.dart';
 import 'package:firebase_chat/frameworks/ui/screens/utility_screens/loading_indicator.dart';
+import 'package:firebase_chat/interface_adapters/presenters/providers/initialization_service.dart';
 
 class InitializeWidget extends StatelessWidget {
   static const String routeName = '/';
@@ -29,7 +29,7 @@ class InitializeWidget extends StatelessWidget {
           }
           return initSnapshot.connectionState == ConnectionState.waiting
               ? const LoadingIndicator(
-                  message: 'Wait, please. FirebaseApp is initializing.')
+                  message: 'Wait, please. FirebaseApp is initializing.',)
               : StreamBuilder(
                   // The Stream works as a trigger that switches to the "ChatScreen" class
                   // because the user's state has changed and the user is currently signed in,

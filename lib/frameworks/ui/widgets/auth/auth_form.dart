@@ -51,38 +51,42 @@ class _AuthFormState extends State<AuthForm> {
                 children: <Widget>[
                   TextFormField(
                     key: const ValueKey('email'),
-                    validator: (value) => _validateEmail(value!),
                     keyboardAppearance: Brightness.dark,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(labelText: 'Email address'),
+                    autocorrect: false,
+                    enableSuggestions: false,
+                    validator: (value) => _validateEmail(value!),
                     onSaved: (value) => _userEmail = value!.trim(),
                   ),
                   if (!_isLogin)
                     TextFormField(
                       key: const ValueKey('username'),
+                      keyboardAppearance: Brightness.dark,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(labelText: 'User name'),
+                      enableSuggestions: false,
+                      textCapitalization: TextCapitalization.words,
                       validator: (value) {
                         if (value!.isEmpty || value.length < 4) {
                           return 'Please enter at least 4 characters';
                         }
                         return null;
                       },
-                      keyboardAppearance: Brightness.dark,
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(labelText: 'User name'),
                       onSaved: (value) => _userName = value!.trim(),
                     ),
                   TextFormField(
                     key: const ValueKey('password'),
+                    keyboardAppearance: Brightness.dark,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    decoration: const InputDecoration(labelText: 'Password'),
                     validator: (value) {
                       if (value!.isEmpty || value.length < 7) {
                         return 'Password must be at least 7 characters long';
                       }
                       return null;
                     },
-                    keyboardAppearance: Brightness.dark,
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
-                    decoration: const InputDecoration(labelText: 'Password'),
                     onSaved: (value) => _userPassword = value!.trim(),
                   ),
                   const SizedBox(height: 12.0),
@@ -118,7 +122,7 @@ class _AuthFormState extends State<AuthForm> {
                     if (!widget.isLoading)
                       TextButton(
                           onPressed: () {},
-                          child: const Text('Forgot the password?')),
+                          child: const Text('Forgot the password?'),),
                 ],
               ),
             ),
@@ -137,8 +141,7 @@ class _AuthFormState extends State<AuthForm> {
       return;
     }
     _formKey.currentState!.save();
-    log(
-        '$mainTag _trySubmit save(): $_userEmail; $_userName; $_userPassword');
+    log('$mainTag _trySubmit save(): $_userEmail; $_userName; $_userPassword');
     widget.submitAuthForm(
       email: _userEmail,
       name: _userName,

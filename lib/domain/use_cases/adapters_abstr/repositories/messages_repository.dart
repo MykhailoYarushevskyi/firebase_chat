@@ -1,6 +1,6 @@
 import 'package:firebase_chat/interface_adapters/repositories/repository_models/repository_message_model.dart';
 
-abstract class MessagesRepository {
+abstract class MessagesRepositoryAbstr {
   /// returns the stream of messages
   Stream<List<RepositoryMessageModel>> getStreamMessagesRepo();
 

@@ -1,12 +1,11 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:firebase_chat/interface_adapters/repositories/soources_abstr/web/firebase/massages_firestore_service.dart';
+import 'package:firebase_chat/interface_adapters/repositories/soources_abstr/firebase/massages_firestore_service_abstr.dart';
 
 /// For creating, reading, updating, deleting messages in Firebase Firestore
-class MessagesFirestoreServiceImpl implements MessagesFirestoreService {
-  static const String mainTag = '## MessagesFirestoreServiceImpl';
+class MessagesFirestoreService implements MessagesFirestoreServiceAbstr {
+  static const String mainTag = '## MessagesFirestoreServiceAbstr';
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final _collectionPath = 'chat';
 

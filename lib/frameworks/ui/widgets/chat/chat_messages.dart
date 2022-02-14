@@ -9,18 +9,21 @@ import 'package:firebase_chat/interface_adapters/presenters/presenter_models/pre
 import 'package:firebase_chat/interface_adapters/presenters/providers/auth.dart';
 import 'package:firebase_chat/interface_adapters/presenters/providers/messages.dart';
 
+late double _deviceWidth;
+late Messages _messagesInstance;
+
 class ChatMessages extends StatelessWidget {
   static const String mainTag = '## ChatMessages';
   final localeString = 'uk';
-  late double _deviceWidth;
+
   @override
   Widget build(BuildContext context) {
     _deviceWidth = MediaQuery.of(context).size.width;
-    final messagesInstance = Provider.of<Messages>(context, listen: false);
+    _messagesInstance = Provider.of<Messages>(context, listen: false);
     final currentUserId = Provider.of<Auth>(context, listen: false).userId;
     List<PresenterMessageModel>? _messages;
     return StreamBuilder<List<PresenterMessageModel>>(
-        stream: messagesInstance.getMessages(),
+        stream: _messagesInstance.getMessages(),
         builder: (context, streamSnapshot) {
           if (streamSnapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -52,7 +55,7 @@ class ChatMessages extends StatelessWidget {
                     return GestureDetector(
                       onLongPress: () {
                         if (isMyMessage) {
-                          messagesInstance
+                          _messagesInstance
                               .deleteMessage(_messages![index].messageId);
                         }
                       },
@@ -107,7 +110,7 @@ class ChatMessages extends StatelessWidget {
   ) {
     // current message and previous message will be separated
     final bool willBeSeparatedCurrentMessage =
-        willSeparatedMessages(messages, index);
+        _willSeparatedMessages(messages, index);
     bool isCurrentUserDifferentWithPreviousUser = true;
     // will be indent between current and previous messages
     bool indentNormal = false;
@@ -121,48 +124,7 @@ class ChatMessages extends StatelessWidget {
         indentNormal = true;
       }
     }
-    // log('$mainTag._buildItemWidget index: $index, name: ${messages[index].userName}');
-    return FocusedMenuHolder(
-      menuWidth: _deviceWidth * 0.40,
-      blurSize: 5.0,
-      menuItemExtent: 45,
-      menuBoxDecoration: const BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      duration: const Duration(milliseconds: 100),
-      animateMenuItems: true,
-      blurBackgroundColor: Colors.black54,
-      // openWithTap: false, // Open Focused-Menu on Tap rather than Long Press
-      menuOffset: 10.0, // Offset value to show menuItem from the selected item
-      bottomOffsetHeight:
-          80.0, // Offset height to consider, for showing the menu item ( for example bottom navigation bar), so that the popup menu will be shown on top of selected item.
-      menuItems: <FocusedMenuItem>[
-        // Add Each FocusedMenuItem  for Menu Options
-        FocusedMenuItem(
-            title: const Text("Open"),
-            trailingIcon: const Icon(Icons.open_in_new),
-            onPressed: () {
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => PlayGround()));
-            }),
-        FocusedMenuItem(
-            title: const Text("Share"),
-            trailingIcon: const Icon(Icons.share),
-            onPressed: () {}),
-        FocusedMenuItem(
-            title: const Text("Modify"),
-            trailingIcon: const Icon(Icons.edit),
-            onPressed: () {}),
-        FocusedMenuItem(
-            title:
-                const Text("Delete", style: TextStyle(color: Colors.redAccent)),
-            trailingIcon: const Icon(
-              Icons.delete,
-              color: Colors.redAccent,
-            ),
-            onPressed: () {}),
-      ],
-      onPressed: () {},
+    return _buildItemWidgetWithComtextMenu(
       child: Align(
         alignment: isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
         child: Container(
@@ -216,7 +178,57 @@ class ChatMessages extends StatelessWidget {
     );
   }
 
-  bool willSeparatedMessages(List<PresenterMessageModel> messages, int index) {
+  /// builds the message widget with context menu
+  /// [child] message widget
+  Widget _buildItemWidgetWithComtextMenu({
+    required Widget child,
+  }) {
+    return FocusedMenuHolder(
+      menuWidth: _deviceWidth * 0.40,
+      blurSize: 5.0,
+      menuItemExtent: 45,
+      menuBoxDecoration: const BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      duration: const Duration(milliseconds: 100),
+      animateMenuItems: true,
+      blurBackgroundColor: Colors.black54,
+      // openWithTap: false, // Open Focused-Menu on Tap rather than Long Press
+      menuOffset: 10.0, // Offset value to show menuItem from the selected item
+      bottomOffsetHeight:
+          80.0, // Offset height to consider, for showing the menu item ( for example bottom navigation bar), so that the popup menu will be shown on top of selected item.
+      menuItems: <FocusedMenuItem>[
+        // Add Each FocusedMenuItem  for Menu Options
+        FocusedMenuItem(
+            title: const Text("Open"),
+            trailingIcon: const Icon(Icons.open_in_new),
+            onPressed: () {
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => PlayGround()));
+            }),
+        FocusedMenuItem(
+            title: const Text("Share"),
+            trailingIcon: const Icon(Icons.share),
+            onPressed: () {}),
+        FocusedMenuItem(
+            title: const Text("Modify"),
+            trailingIcon: const Icon(Icons.edit),
+            onPressed: () {}),
+        FocusedMenuItem(
+            title:
+                const Text("Delete", style: TextStyle(color: Colors.redAccent)),
+            trailingIcon: const Icon(
+              Icons.delete,
+              color: Colors.redAccent,
+            ),
+            onPressed: () {}),
+      ],
+      onPressed: () {},
+      child: child,
+    );
+  }
+
+  bool _willSeparatedMessages(List<PresenterMessageModel> messages, int index) {
     if (index >= 0 && index < messages.length - 1) {
       final DateTime currentItemDate =
           DateTime.fromMillisecondsSinceEpoch(messages[index].dateTimeMessage);

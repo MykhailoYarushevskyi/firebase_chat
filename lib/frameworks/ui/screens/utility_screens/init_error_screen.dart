@@ -114,7 +114,7 @@ class InitErrorScreen extends StatelessWidget {
   Color _setForegroundButtonColor(
       BuildContext context, Set<MaterialState> states) {
     if (states.contains(MaterialState.pressed)) {
-      return Theme.of(context).accentColor;
+      return Theme.of(context).colorScheme.secondary;
     }
     return Theme.of(context).errorColor;
   }
@@ -124,6 +124,6 @@ class InitErrorScreen extends StatelessWidget {
     if (states.contains(MaterialState.pressed)) {
       return Colors.red;
     }
-    return Theme.of(context).buttonColor;
+    return Theme.of(context).primaryColor;
   }
 }

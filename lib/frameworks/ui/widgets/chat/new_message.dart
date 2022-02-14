@@ -41,6 +41,7 @@ class _NewMessageState extends State<NewMessage> with ShowDialogs {
             child: TextField(
               controller: textController,
               decoration: const InputDecoration(labelText: 'Send a message...'),
+              textCapitalization: TextCapitalization.sentences,
               onChanged: (value) {
                 setState(() {
                   _enteredMessage = value;

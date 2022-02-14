@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-abstract class MessagesFirestoreService {
+abstract class MessagesFirestoreServiceAbstr {
   /// returns the stream of messages ordered by [date_time_message] field from the Firestore
   Stream<QuerySnapshot<Map<String, dynamic>>> getStreamMessagesService();
 

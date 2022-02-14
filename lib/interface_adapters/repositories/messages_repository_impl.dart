@@ -2,13 +2,13 @@ import 'dart:developer';
 
 import 'package:firebase_chat/domain/use_cases/adapters_abstr/repositories/messages_repository.dart';
 import 'package:firebase_chat/interface_adapters/repositories/repository_models/repository_message_model.dart';
-import 'package:firebase_chat/interface_adapters/repositories/soources_abstr/web/firebase/massages_firestore_service.dart';
+import 'package:firebase_chat/interface_adapters/repositories/soources_abstr/firebase/massages_firestore_service_abstr.dart';
 
-class MessagesRepositoryImpl implements MessagesRepository {
-  static const String mainTag = '## MessagesRepositoryImpl';
-  final MessagesFirestoreService messagesFirestoreService;
+class MessagesRepository implements MessagesRepositoryAbstr {
+  static const String mainTag = '## MessagesRepository';
+  final MessagesFirestoreServiceAbstr messagesFirestoreService;
 
-  MessagesRepositoryImpl(this.messagesFirestoreService);
+  MessagesRepository(this.messagesFirestoreService);
 
   /// returns the stream of messages that ordered by [date_time_message] field
   @override
